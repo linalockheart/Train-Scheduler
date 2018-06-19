@@ -20,9 +20,24 @@ var config = {
   var firstTrain = "";
   var frequency ="";
 
-  var realTime = 
-
 // Functions
+
+function clock() {
+    dateAndTime = new Date();
+    hours = dateAndTime.getHours();
+    minutes = dateAndTime.getMinutes();
+    $("#hours").text(hours + " :");
+    $("#minutes").text(minutes);
+
+    if (hours < 10) {
+        hours = "0" + hours;
+    }
+    if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
+}
+    var currentTime = //need to figure out how to get current time to calculte minutes away
+//does this need to wrap around everything so I can reference the local variables?
 
       $("#add-train").on("click", function(event) {
         event.preventDefault();
@@ -52,14 +67,15 @@ var config = {
         var destinationTD = $("<td>").text(snapshot.val().destination);
         var firstTrainTD = $("<td>").text(snapshot.val().firstTrain);
         var frequencyTD = $("<td>").text(snapshot.val().frequency);
-        var minAwayTD = $("<td>");
+        var minAwayTD = $("<td>"); // need to add something here to calculate
 
         tRow.append(trainNameTD, destinationTD, firstTrainTD, frequencyTD, minAwayTD);
         tBody.append(tRow);
         
-
-        // Create Error Handling
         }, function(errorObject) {
         console.log("The read failed: " + errorObject.code);
         });
 
+    // Call Functions
+        clock();
+        setInterval(clock, 1000 * 60);
