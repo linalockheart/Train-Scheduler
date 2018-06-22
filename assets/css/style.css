@@ -3,12 +3,14 @@
   }
 
 .wrapper {
-    margin-right: 20%;
-    margin-left: 20%;
+    margin-right: 15%;
+    margin-left: 15%;
+    margin-bottom: 1%;
 }
 
 .jumbotron {
-    margin-top: 5%;
+    margin-top: 2%;
+    margin-bottom: 3.5%;
     border-radius: 25px;
     color: #ffffff;
     background-color: #00004d;

@@ -28,6 +28,7 @@ function clock() {
     minutes = dateAndTime.getMinutes();
     $("#hours").text(hours + " :");
     $("#minutes").text(minutes);
+    console.log(dateAndTime);
 
     if (hours < 10) {
         hours = "0" + hours;
@@ -46,7 +47,9 @@ function clock() {
         destination = $("#destination-input").val();
         firstTrain = $("#first-train-input").val();
         frequency = $("#frequency-input").val();
-        database.ref().set({
+
+//use .push instead of .set to stop overwriting the info in firebase
+        database.ref().set({ 
           trainName: trainName, 
           destination: destination,
           firstTrain: firstTrain,
@@ -75,6 +78,14 @@ function clock() {
         }, function(errorObject) {
         console.log("The read failed: " + errorObject.code);
         });
+
+        $("#clear-form").on("click", function(clear) {
+            $("#train-name-input").empty();
+            $("#destination-input").empty();
+            $("#first-train-input").empty();
+            $("#frequency-input").empty();
+        })
+
 
     // Call Functions
         clock();
