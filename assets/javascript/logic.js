@@ -37,54 +37,64 @@ function clock() {
         minutes = "0" + minutes;
     }
 }
-    var currentTime = //need to figure out how to get current time to calculte minutes away
-//does this need to wrap around everything so I can reference the local variables?
 
       $("#add-train").on("click", function(event) {
         event.preventDefault();
         
-        trainName = $("#train-name-input").val();
-        destination = $("#destination-input").val();
-        firstTrain = $("#first-train-input").val();
-        frequency = $("#frequency-input").val();
+        trainName = $("#train-name-input").val().trim();
+        destination = $("#destination-input").val().trim();
+        firstTrain = $("#first-train-input").val().trim();
+        frequency = $("#frequency-input").val().trim();
 
 //use .push instead of .set to stop overwriting the info in firebase
-        database.ref().set({ 
-          trainName: trainName, 
-          destination: destination,
-          firstTrain: firstTrain,
-          frequency: frequency
-        });
+        var newTrain = {
+            trainName: trainName, 
+            destination: destination,
+            firstTrain: firstTrain,
+            frequency: frequency
+        };
+
+        database.ref().push(newTrain);
+
+        console.log(newTrain.trainName);
+        console.log(newTrain.destination);
+        console.log(newTrain.firstTrain);
+        console.log(newTrain.frequency);
+
+        $("#train-name-input").val("");
+        $("#destination-input").val("")
+        $("#first-train-input").val("");
+        $("#frequency-input").val("");
+
       });
 
-    database.ref().on("value", function(snapshot) {
-        console.log(snapshot.val().trainName);
-        console.log(snapshot.val().destination);
-        console.log(snapshot.val().firstTrain);
-        console.log(snapshot.val().frequency);
+    database.ref().on("child_added", function(childSnapshot) {
+        console.log(childSnapshot);
+
+        var currentTime = moment();
 
         var tBody = $("tbody");
         var tRow = $("<tr>");
 
-        var trainNameTD = $("<td>").text(snapshot.val().trainName);
-        var destinationTD = $("<td>").text(snapshot.val().destination);
-        var firstTrainTD = $("<td>").text(snapshot.val().firstTrain);
-        var frequencyTD = $("<td>").text(snapshot.val().frequency);
+        var trainNameTD = $("<td>").text(childSnapshot.val().trainName);
+        var destinationTD = $("<td>").text(childSnapshot.val().destination);
+        var frequencyTD = $("<td>").text(childSnapshot.val().frequency);
+        var nextTrainTD = $("<td>") //this needs to be next train instead of first train
         var minAwayTD = $("<td>"); // need to add something here to calculate
 
-        tRow.append(trainNameTD, destinationTD, firstTrainTD, frequencyTD, minAwayTD);
+        tRow.append(trainNameTD, destinationTD, frequencyTD, nextTrainTD, minAwayTD);
         tBody.append(tRow);
         
         }, function(errorObject) {
         console.log("The read failed: " + errorObject.code);
         });
 
-        $("#clear-form").on("click", function(clear) {
-            $("#train-name-input").empty();
-            $("#destination-input").empty();
-            $("#first-train-input").empty();
-            $("#frequency-input").empty();
-        })
+        // $("#clear-form").on("click", function(clear) {
+        //     $("#train-name-input").empty();
+        //     $("#destination-input").empty();
+        //     $("#first-train-input").empty();
+        //     $("#frequency-input").empty();
+        // })
 
 
     // Call Functions
