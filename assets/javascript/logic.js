@@ -26,16 +26,19 @@ function clock() {
     dateAndTime = new Date();
     hours = dateAndTime.getHours();
     minutes = dateAndTime.getMinutes();
-    $("#hours").text(hours + " :");
-    $("#minutes").text(minutes);
-    console.log(dateAndTime);
 
     if (hours < 10) {
         hours = "0" + hours;
     }
     if (minutes < 10) {
         minutes = "0" + minutes;
+        console.log(minutes);
     }
+
+    $("#hours").text(hours + " :");
+    $("#minutes").text(minutes);
+    // console.log(dateAndTime);
+
 }
 
       $("#add-train").on("click", function(event) {
@@ -76,21 +79,21 @@ function clock() {
         // console.log("current time: " + currentTime);
 
         var firstTrainTime = moment(childSnapshot.val().firstTrain, "HH:mm").subtract(1, "years");
-        console.log("first train converted " + firstTrainTime);
+        // console.log("first train converted " + firstTrainTime);
 
         var timeDiff = moment().diff(moment(firstTrainTime), "minutes");
-        console.log("time diff " + timeDiff);
+        // console.log("time diff " + timeDiff);
 
         var timeApart = timeDiff % parseInt(childSnapshot.val().frequency);
-        console.log("time apart " + timeApart);
+        // console.log("time apart " + timeApart);
 
         // Minute Until Train
         var minAway = parseInt(childSnapshot.val().frequency) - timeApart;
-        console.log("minutes away " + minAway);
+        // console.log("minutes away " + minAway);
 
         // Next Train
         var nextTrain = moment().add(minAway, "minutes");
-        console.log("ARRIVAL TIME: " + moment(nextTrain).format("HH:mm"));
+        // console.log("ARRIVAL TIME: " + moment(nextTrain).format("HH:mm"));
 
         var tBody = $("tbody");
         var tRow = $("<tr>");
@@ -112,3 +115,4 @@ function clock() {
     // Call Functions
         clock();
         setInterval(clock, 1000 * 60);
+  
